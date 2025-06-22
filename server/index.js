@@ -5,6 +5,7 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 const app = express();
 
+// middleware
 app.use(cors());
 app.use(express.json());
 
@@ -28,6 +29,12 @@ async function run() {
     const allCoffees = await coffeeCollection.find().toArray();
     console.log(allCoffees);
     res.send(allCoffees);
+  });
+
+  app.post("/add-coffee", async (req, res) => {
+    const coffeesData = req.body;
+    const result = await coffeeCollection.insertOne(coffeesData);
+    res.status(201).send({ ...result, message: "Data Paisi Vai" });
   });
 
   try {
